@@ -17,6 +17,10 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.get('/',(req,res) => {
+    res.send('Successfuly hit');
+})
+
 app.get('/api/msgStore', (req, res) => {
     const resData = jsonXml(JSON.stringify(messageArray));
     res.send(resData);
