@@ -1,33 +1,32 @@
 const express = require('express');
 const app = express();
-const jsonXml = require('jsontoxml');
 var bodyParser = require('body-parser');
-require('body-parser-xml')(bodyParser); 
 
 const PORT = process.env.PORT || 3000;
-const messageArray = [];
+let messageStr = "";
 
-app.use(bodyParser.xml({
-    xmlParseOptions: {
-        normalizeTags: true, // Transform tags to lowercase
-        explicitArray: false // Only put nodes in array if >1
-    }
-}));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+app.use(bodyParser.text());
 
 app.get('/',(req,res) => {
     res.send('Successfuly hit');
 })
 
 app.get('/api/msgStore', (req, res) => {
-    const resData = jsonXml(JSON.stringify(messageArray));
-    res.send(resData);
+    res.send(messageStr);
 }) 
 
 app.post('/api/msgStore', (req, res) => {
-    messageArray.push(req.body)
+    req.body = req.body.replace("@ string 3http://schemas.microsoft.com/2003/10/Serialization/��", "");
+    let delimiter = "\,";
+    if (messageStr === "") {
+        delimiter = "";
+    }
+    messageStr += delimiter + req.body;
+    console.log(messageStr);
     res.send('Success');
 })
 
