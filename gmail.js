@@ -70,23 +70,24 @@ function getNewToken(oAuth2Client, callback) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 
-function fetchReply() {
+function fetchReply(auth) {
   const userId = "me";
   const query = "";
   const callback = (result) => {
     console.log(result)
   }
 
-  listMessages(userId, query, callback)
+  listMessages(userId, query, callback, auth)
 }
 
-function listMessages(userId, query, callback) {
+function listMessages(userId, query, callback, auth) {
+  const gmail = google.gmail({version: 'v1', auth});
   var getPageOfMessages = function(request, result) {
     request.execute(function(resp) {
       result = result.concat(resp.messages);
       var nextPageToken = resp.nextPageToken;
       if (nextPageToken) {
-        request = gapi.client.gmail.users.messages.list({
+        request = gmail.users.messages.list({
           'userId': userId,
           'pageToken': nextPageToken,
           'q': query,
@@ -98,7 +99,7 @@ function listMessages(userId, query, callback) {
       }
     });
   };
-  var initialRequest = gapi.client.gmail.users.messages.list({
+  var initialRequest = gmail.users.messages.list({
     'userId': userId,
     'q': query
   });
