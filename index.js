@@ -34,7 +34,7 @@ app.get('/api/fetchreply', (req, res) => {
     require('./gmail.js');
     const resp = require('./gmail.js').resp;
     console.log(resp);
-    res.send("Response fetched successfully!");
+    resp ? res.status(200).send("Found") : res.status(277).send("Not Found")
 })
 
 app.listen(PORT, () => {

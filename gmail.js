@@ -72,7 +72,7 @@ function getNewToken(oAuth2Client, callback) {
 
 function fetchReply(auth) {
   const userId = "me";
-  const query = "";
+  const query = "subject:(Re Important notes)";
   const callback = (result) => {
     console.log(result)
   }
@@ -82,28 +82,33 @@ function fetchReply(auth) {
 
 function listMessages(userId, query, callback, auth) {
   const gmail = google.gmail({version: 'v1', auth});
-  var getPageOfMessages = function(request, result) {
-    request.execute(function(resp) {
-      result = result.concat(resp.messages);
-      var nextPageToken = resp.nextPageToken;
-      if (nextPageToken) {
-        request = gmail.users.messages.list({
-          'userId': userId,
-          'pageToken': nextPageToken,
-          'q': query,
-          'maxResults': 10
-        });
-        getPageOfMessages(request, result);
-      } else {
-        callback(result);
-      }
-    });
-  };
-  var initialRequest = gmail.users.messages.list({
+  gmail.users.messages.list({
     'userId': userId,
-    'q': query
-  });
-  getPageOfMessages(initialRequest, []);
+    'q': query,
+    'maxResults': 10
+  }, (err, {data}) => {
+    if (err) return console.log('The API returned an error: ' + err);
+    const messages = data.messages;
+    if (messages.length) {
+      messages.forEach((message) => {
+        console.log("Message Data")
+        gmail.users.threads.get({
+          'userId': userId,
+          'id': message.threadId
+        }, (err, {data}) => {
+          if (err) return console.log('The API returned an error: ' + err);
+          console.log(data.messages[0].snippet);
+          if (data.messages[0].snippet.match(/yes/i)) {
+            mailResponse = true;
+          }
+        })
+      });
+    } 
+    else {
+      console.log('No messages found.');
+    }
+
+  })
 }
 
 // function listLabels(auth) {
