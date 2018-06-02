@@ -16,7 +16,8 @@ app.get('/',(req,res) => {
 })
 
 app.get('/api/msgStore', (req, res) => {
-    res.send(messageStr);
+    const respStr = "<pre>" + messageStr + "</pre>"
+    res.send(respStr);
 }) 
 
 app.post('/api/msgStore', (req, res) => {
