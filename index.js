@@ -30,6 +30,13 @@ app.post('/api/msgStore', (req, res) => {
     res.send('Success');
 })
 
+app.get('/api/fetchreply', (req, res) => {
+    require('./gmail.js');
+    const resp = require('./gmail.js').resp;
+    console.log(resp);
+    res.send("Response fetched successfully!");
+})
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
