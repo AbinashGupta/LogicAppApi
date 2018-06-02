@@ -21,12 +21,11 @@ app.get('/api/msgStore', (req, res) => {
 
 app.post('/api/msgStore', (req, res) => {
     req.body = req.body.replace("@ string 3http://schemas.microsoft.com/2003/10/Serialization/��", "");
-    let delimiter = "\,";
+    let delimiter = "\n";
     if (messageStr === "") {
         delimiter = "";
     }
     messageStr += delimiter + req.body;
-    console.log(messageStr);
     res.send('Success');
 })
 
