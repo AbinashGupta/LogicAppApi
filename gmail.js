@@ -72,7 +72,7 @@ function getNewToken(oAuth2Client, callback) {
 
 function fetchReply(auth) {
   const userId = "me";
-  const query = "subject:(Re Important notes)";
+  const query = "subject:(Re Azure Logic App triggered)";
   const callback = (result) => {
     console.log(result)
   }
