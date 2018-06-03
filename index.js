@@ -34,6 +34,7 @@ app.get('/api/fetchreply', async (req, res) => {
     require('./gmail.js');
     const resp = await require('./gmail.js').getMailResponse;
     console.log("gmail response: ",resp);
+    delete require.cache[require.resolve('./gmail.js')]
     resp ? res.status(200).send("Found") : res.status(277).send("Not Found")
 })
 
