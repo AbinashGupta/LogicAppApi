@@ -30,10 +30,10 @@ app.post('/api/msgStore', (req, res) => {
     res.send('Success');
 })
 
-app.get('/api/fetchreply', (req, res) => {
+app.get('/api/fetchreply', async (req, res) => {
     require('./gmail.js');
-    const resp = require('./gmail.js').resp;
-    console.log(resp);
+    const resp = await require('./gmail.js').getMailResponse;
+    console.log("gmail response: ",resp);
     resp ? res.status(200).send("Found") : res.status(277).send("Not Found")
 })
 
