@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 var bodyParser = require('body-parser');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3000;
 let messageStr = "";
@@ -16,12 +17,11 @@ app.get('/',(req,res) => {
 })
 
 app.get('/api/msgStore', (req, res) => {
-    const respStr = "<pre>" + messageStr + "</pre>"
+    const respStr = messageStr;
     res.send(respStr);
 }) 
 
 app.post('/api/msgStore', (req, res) => {
-    req.body = req.body.replace("@ string 3http://schemas.microsoft.com/2003/10/Serialization/��", "");
     let delimiter = "\r\n";
     if (messageStr === "") {
         delimiter = "";
