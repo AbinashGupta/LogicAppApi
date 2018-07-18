@@ -26,7 +26,7 @@ app.post('/api/msgStore', (req, res) => {
     if (messageStr === "") {
         delimiter = "";
     }
-    messageStr += delimiter + req.body;
+    messageStr = req.body + delimiter + messageStr;
     res.send('Success');
 })
 
